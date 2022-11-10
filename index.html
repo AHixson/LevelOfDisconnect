@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Level of Disconnect</title>
+    <meta name="description" content="Blackout timetable in the event of an electricity supply emergency.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+        body {
+            -webkit-print-color-adjust:exact !important;
+            print-color-adjust:exact !important;
+        }
+
+        * {
+            font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+            box-sizing: border-box;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-style: normal;
+            font-variant: normal;
+            font-weight: 700;
+            line-height: 26.4px;
+        }
+
+        h3 {
+            font-size: 14px;
+            font-style: normal;
+            font-variant: normal;
+            font-weight: 700;
+            line-height: 15.4px;
+        }
+
+        p,
+        span,
+        input,
+        textarea,
+        select,
+        button {
+            font-size: 14px;
+            font-style: normal;
+            font-variant: normal;
+            font-weight: 400;
+            line-height: 20px;
+        }
+
+        blockquote {
+            font-size: 21px;
+            font-style: normal;
+            font-variant: normal;
+            font-weight: 400;
+            line-height: 30px;
+        }
+
+        pre {
+            font-size: 13px;
+            font-style: normal;
+            font-variant: normal;
+            font-weight: 400;
+            line-height: 18.5714px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        table,
+        td,
+        th {
+            border: 1px solid black;
+        }
+
+        td[id*="-0-"],
+        td[id*="-2-"],
+        td[id*="-4-"],
+        td[id*="-6-"] {
+            background-color: gainsboro;
+        }
+
+        td[data-b=true] {
+            background-color: black;
+        }
+
+        td[data-f=true] {
+            border-top: 2px solid red !important;
+            border-bottom: 2px solid red !important;
+        }
+
+        td:first-child {
+            text-align: center;
+        }
+
+        tr.period th {
+            font-size: .9rem;
+            padding: .1rem;
+        }
+
+        p {
+            padding: .5rem;
+        }
+
+        .browsehappy {
+            background-color: #F2F200;
+            padding: 15px !important;
+            text-align: center;
+            box-shadow: 0 0 5px #454545;
+            margin-bottom: 1rem;
+            font-size: 16.5px;
+        }
+
+        .controls {
+            padding: 2rem;
+            display: grid;
+        }
+
+        .wrapper {
+            width: min-content;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        input,
+        select {
+            padding: .25rem;
+        }
+
+        tr.time th {
+            height: 8ch;
+            white-space: nowrap;
+            vertical-align: top;
+        }
+
+        tr.time th:first-child {
+            vertical-align: middle;
+        }
+
+        tr.time th > div {
+            width: 1ch;
+            rotate: 90deg;
+        }
+
+        tr.time span {
+            font-size: .7rem;
+        }
+
+        tr.day th[data-b=true],
+        tr.time th[data-b=true],
+        tr.period th[data-b=true] {
+            background-color: red;
+            color: white;
+        }
+
+        div.me {
+            width: 100vw;
+            background-color: black;
+            position: fixed;
+            bottom: 0;
+            text-align: center;
+            padding: .5ch;
+            font-size: x-small;
+        }
+
+        div.me, div.me *
+        {
+            color: gainsboro;
+        }
+
+    </style>
+</head>
+
+<body>
+    <!--[if lt IE 7]>
+        <p class="browsehappy">Older browsers might not show the page as intended. Please upgrade your browser.</p>
+    <![endif]-->
+    <div class="wrapper">
+        <h1>Level of Disconnect</h1>
+        <p>See the timetable below for when blackouts are scheduled to occur during an electricity supply emergency. For
+            more information go to <a target="_blank"
+                href="https://www.gov.uk/government/publications/electricity-supply-emergency-code">https://www.gov.uk/government/publications/electricity-supply-emergency-code</a>
+        </p>
+        <form class="controls" onsubmit="return false;">
+            <label for="lvl">Level of Disconnection</label>
+            <input id="lvl" name="lvl" type="number" step="1" min="0" max="18" value="0">
+            </br>
+            <label for="code">Operator Code</label>
+            <select id="code" name="code">
+                <option value="">- None -</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="G">G</option>
+                <option value="H">H</option>
+                <option value="J">J</option>
+                <option value="K">K</option>
+                <option value="L">L</option>
+                <option value="M">M</option>
+                <option value="N">N</option>
+                <option value="P">P</option>
+                <option value="Q">Q</option>
+                <option value="R">R</option>
+                <option value="S">S</option>
+                <option value="T">T</option>
+                <option value="U">U</option>
+            </select>
+            <span>Find your operator code at <a target="_blank"
+                    href="https://www.powercut105.com/FindOperator">https://www.powercut105.com/FindOperator</a></span>
+        </form>
+        <table class="timetable">
+            <thead>
+                <tr class="day">
+                    <th>Day</th>
+                    <th id="-0" colspan="8">Monday</th>
+                    <th id="-1" colspan="8">Tuesday</th>
+                    <th id="-2" colspan="8">Wednesday</th>
+                    <th id="-3" colspan="8">Thursday</th>
+                    <th id="-4" colspan="8">Friday</th>
+                    <th id="-5" colspan="8">Saturday</th>
+                    <th id="-6" colspan="8">Sunday</th>
+                </tr>
+                <tr class="time">
+                    <th data-period="">Time</th>
+                    <th data-period="-0-0">
+                        <div><span>0030-0330</span></div>
+                    </th>
+                    <th data-period="-0-1">
+                        <div><span>0330-0630</span></div>
+                    </th>
+                    <th data-period="-0-2">
+                        <div><span>0630-0930</span></div>
+                    </th>
+                    <th data-period="-0-3">
+                        <div><span>0930-1230</span></div>
+                    </th>
+                    <th data-period="-0-4">
+                        <div><span>1230-1530</span></div>
+                    </th>
+                    <th data-period="-0-5">
+                        <div><span>1530-1830</span></div>
+                    </th>
+                    <th data-period="-0-6">
+                        <div><span>1830-2130</span></div>
+                    </th>
+                    <th data-period="-0-7">
+                        <div><span>2130-0030</span></div>
+                    </th>
+                    <th data-period="-1-0">
+                        <div><span>0030-0330</span></div>
+                    </th>
+                    <th data-period="-1-1">
+                        <div><span>0330-0630</span></div>
+                    </th>
+                    <th data-period="-1-2">
+                        <div><span>0630-0930</span></div>
+                    </th>
+                    <th data-period="-1-3">
+                        <div><span>0930-1230</span></div>
+                    </th>
+                    <th data-period="-1-4">
+                        <div><span>1230-1530</span></div>
+                    </th>
+                    <th data-period="-1-5">
+                        <div><span>1530-1830</span></div>
+                    </th>
+                    <th data-period="-1-6">
+                        <div><span>1830-2130</span></div>
+                    </th>
+                    <th data-period="-1-7">
+                        <div><span>2130-0030</span></div>
+                    </th>
+                    <th data-period="-2-0">
+                        <div><span>0030-0330</span></div>
+                    </th>
+                    <th data-period="-2-1">
+                        <div><span>0330-0630</span></div>
+                    </th>
+                    <th data-period="-2-2">
+                        <div><span>0630-0930</span></div>
+                    </th>
+                    <th data-period="-2-3">
+                        <div><span>0930-1230</span></div>
+                    </th>
+                    <th data-period="-2-4">
+                        <div><span>1230-1530</span></div>
+                    </th>
+                    <th data-period="-2-5">
+                        <div><span>1530-1830</span></div>
+                    </th>
+                    <th data-period="-2-6">
+                        <div><span>1830-2130</span></div>
+                    </th>
+                    <th data-period="-2-7">
+                        <div><span>2130-0030</span></div>
+                    </th>
+                    <th data-period="-3-0">
+                        <div><span>0030-0330</span></div>
+                    </th>
+                    <th data-period="-3-1">
+                        <div><span>0330-0630</span></div>
+                    </th>
+                    <th data-period="-3-2">
+                        <div><span>0630-0930</span></div>
+                    </th>
+                    <th data-period="-3-3">
+                        <div><span>0930-1230</span></div>
+                    </th>
+                    <th data-period="-3-4">
+                        <div><span>1230-1530</span></div>
+                    </th>
+                    <th data-period="-3-5">
+                        <div><span>1530-1830</span></div>
+                    </th>
+                    <th data-period="-3-6">
+                        <div><span>1830-2130</span></div>
+                    </th>
+                    <th data-period="-3-7">
+                        <div><span>2130-0030</span></div>
+                    </th>
+                    <th data-period="-4-0">
+                        <div><span>0030-0330</span></div>
+                    </th>
+                    <th data-period="-4-1">
+                        <div><span>0330-0630</span></div>
+                    </th>
+                    <th data-period="-4-2">
+                        <div><span>0630-0930</span></div>
+                    </th>
+                    <th data-period="-4-3">
+                        <div><span>0930-1230</span></div>
+                    </th>
+                    <th data-period="-4-4">
+                        <div><span>1230-1530</span></div>
+                    </th>
+                    <th data-period="-4-5">
+                        <div><span>1530-1830</span></div>
+                    </th>
+                    <th data-period="-4-6">
+                        <div><span>1830-2130</span></div>
+                    </th>
+                    <th data-period="-4-7">
+                        <div><span>2130-0030</span></div>
+                    </th>
+                    <th data-period="-5-0">
+                        <div><span>0030-0330</span></div>
+                    </th>
+                    <th data-period="-5-1">
+                        <div><span>0330-0630</span></div>
+                    </th>
+                    <th data-period="-5-2">
+                        <div><span>0630-0930</span></div>
+                    </th>
+                    <th data-period="-5-3">
+                        <div><span>0930-1230</span></div>
+                    </th>
+                    <th data-period="-5-4">
+                        <div><span>1230-1530</span></div>
+                    </th>
+                    <th data-period="-5-5">
+                        <div><span>1530-1830</span></div>
+                    </th>
+                    <th data-period="-5-6">
+                        <div><span>1830-2130</span></div>
+                    </th>
+                    <th data-period="-5-7">
+                        <div><span>2130-0030</span></div>
+                    </th>
+                    <th data-period="-6-0">
+                        <div><span>0030-0330</span></div>
+                    </th>
+                    <th data-period="-6-1">
+                        <div><span>0330-0630</span></div>
+                    </th>
+                    <th data-period="-6-2">
+                        <div><span>0630-0930</span></div>
+                    </th>
+                    <th data-period="-6-3">
+                        <div><span>0930-1230</span></div>
+                    </th>
+                    <th data-period="-6-4">
+                        <div><span>1230-1530</span></div>
+                    </th>
+                    <th data-period="-6-5">
+                        <div><span>1530-1830</span></div>
+                    </th>
+                    <th data-period="-6-6">
+                        <div><span>1830-2130</span></div>
+                    </th>
+                    <th data-period="-6-7">
+                        <div><span>2130-0030</span></div>
+                    </th>
+                </tr>
+                <tr class="period">
+                    <th>Period</th>
+                    <th id="-0-0" title="(Sunday) 00:30-03:30">1</th>
+                    <th id="-0-1" title="03:30-06:30">2</th>
+                    <th id="-0-2" title="06:30-09:30">3</th>
+                    <th id="-0-3" title="09:30-12:30">4</th>
+                    <th id="-0-4" title="12:30-15:30">5</th>
+                    <th id="-0-5" title="15:30-18:30">6</th>
+                    <th id="-0-6" title="18:30-21:30">7</th>
+                    <th id="-0-7" title="21:30-00:30 (Tuesday)">8</th>
+                    <th id="-1-0" title="(Monday) 00:30-03:30">1</th>
+                    <th id="-1-1" title="03:30-06:30">2</th>
+                    <th id="-1-2" title="06:30-09:30">3</th>
+                    <th id="-1-3" title="09:30-12:30">4</th>
+                    <th id="-1-4" title="12:30-15:30">5</th>
+                    <th id="-1-5" title="15:30-18:30">6</th>
+                    <th id="-1-6" title="18:30-21:30">7</th>
+                    <th id="-1-7" title="21:30-00:30 (Wednesday)">8</th>
+                    <th id="-2-0" title="(Tuesday) 00:30-03:30">1</th>
+                    <th id="-2-1" title="03:30-06:30">2</th>
+                    <th id="-2-2" title="06:30-09:30">3</th>
+                    <th id="-2-3" title="09:30-12:30">4</th>
+                    <th id="-2-4" title="12:30-15:30">5</th>
+                    <th id="-2-5" title="15:30-18:30">6</th>
+                    <th id="-2-6" title="18:30-21:30">7</th>
+                    <th id="-2-7" title="21:30-00:30 (Thursday)">8</th>
+                    <th id="-3-0" title="(Wednesday) 00:30-03:30">1</th>
+                    <th id="-3-1" title="03:30-06:30">2</th>
+                    <th id="-3-2" title="06:30-09:30">3</th>
+                    <th id="-3-3" title="09:30-12:30">4</th>
+                    <th id="-3-4" title="12:30-15:30">5</th>
+                    <th id="-3-5" title="15:30-18:30">6</th>
+                    <th id="-3-6" title="18:30-21:30">7</th>
+                    <th id="-3-7" title="21:30-00:30 (Friday)">8</th>
+                    <th id="-4-0" title="(Thursday) 00:30-03:30">1</th>
+                    <th id="-4-1" title="03:30-06:30">2</th>
+                    <th id="-4-2" title="06:30-09:30">3</th>
+                    <th id="-4-3" title="09:30-12:30">4</th>
+                    <th id="-4-4" title="12:30-15:30">5</th>
+                    <th id="-4-5" title="15:30-18:30">6</th>
+                    <th id="-4-6" title="18:30-21:30">7</th>
+                    <th id="-4-7" title="21:30-00:30 (Saturday)">8</th>
+                    <th id="-5-0" title="(Friday) 00:30-03:30">1</th>
+                    <th id="-5-1" title="03:30-06:30">2</th>
+                    <th id="-5-2" title="06:30-09:30">3</th>
+                    <th id="-5-3" title="09:30-12:30">4</th>
+                    <th id="-5-4" title="12:30-15:30">5</th>
+                    <th id="-5-5" title="15:30-18:30">6</th>
+                    <th id="-5-6" title="18:30-21:30">7</th>
+                    <th id="-5-7" title="21:30-00:30 (Sunday)">8</th>
+                    <th id="-6-0" title="(Saturday) 00:30-03:30">1</th>
+                    <th id="-6-1" title="03:30-06:30">2</th>
+                    <th id="-6-2" title="06:30-09:30">3</th>
+                    <th id="-6-3" title="09:30-12:30">4</th>
+                    <th id="-6-4" title="12:30-15:30">5</th>
+                    <th id="-6-5" title="15:30-18:30">6</th>
+                    <th id="-6-6" title="18:30-21:30">7</th>
+                    <th id="-6-7" title="21:30-00:30 (Monday)">8</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-c="A">
+                    <td id="A-">A</td>
+                    <td id="A-0-0" data-lvl="0"></td>
+                    <td id="A-0-1" data-lvl="9"></td>
+                    <td id="A-0-2" data-lvl="2"></td>
+                    <td id="A-0-3" data-lvl="15"></td>
+                    <td id="A-0-4" data-lvl="1"></td>
+                    <td id="A-0-5" data-lvl="12"></td>
+                    <td id="A-0-6" data-lvl="4"></td>
+                    <td id="A-0-7" data-lvl="7"></td>
+                    <td id="A-1-0" data-lvl="3"></td>
+                    <td id="A-1-1" data-lvl="13"></td>
+                    <td id="A-1-2" data-lvl="16"></td>
+                    <td id="A-1-3" data-lvl="3"></td>
+                    <td id="A-1-4" data-lvl="10"></td>
+                    <td id="A-1-5" data-lvl="8"></td>
+                    <td id="A-1-6" data-lvl="1"></td>
+                    <td id="A-1-7" data-lvl="8"></td>
+                    <td id="A-2-0" data-lvl="9"></td>
+                    <td id="A-2-1" data-lvl="2"></td>
+                    <td id="A-2-2" data-lvl="12"></td>
+                    <td id="A-2-3" data-lvl="1"></td>
+                    <td id="A-2-4" data-lvl="15"></td>
+                    <td id="A-2-5" data-lvl="0"></td>
+                    <td id="A-2-6" data-lvl="7"></td>
+                    <td id="A-2-7" data-lvl="13"></td>
+                    <td id="A-3-0" data-lvl="6"></td>
+                    <td id="A-3-1" data-lvl="11"></td>
+                    <td id="A-3-2" data-lvl="5"></td>
+                    <td id="A-3-3" data-lvl="17"></td>
+                    <td id="A-3-4" data-lvl="7"></td>
+                    <td id="A-3-5" data-lvl="14"></td>
+                    <td id="A-3-6" data-lvl="3"></td>
+                    <td id="A-3-7" data-lvl="8"></td>
+                    <td id="A-4-0" data-lvl="13"></td>
+                    <td id="A-4-1" data-lvl="16"></td>
+                    <td id="A-4-2" data-lvl="4"></td>
+                    <td id="A-4-3" data-lvl="10"></td>
+                    <td id="A-4-4" data-lvl="8"></td>
+                    <td id="A-4-5" data-lvl="4"></td>
+                    <td id="A-4-6" data-lvl="11"></td>
+                    <td id="A-4-7" data-lvl="5"></td>
+                    <td id="A-5-0" data-lvl="11"></td>
+                    <td id="A-5-1" data-lvl="5"></td>
+                    <td id="A-5-2" data-lvl="17"></td>
+                    <td id="A-5-3" data-lvl="7"></td>
+                    <td id="A-5-4" data-lvl="14"></td>
+                    <td id="A-5-5" data-lvl="6"></td>
+                    <td id="A-5-6" data-lvl="9"></td>
+                    <td id="A-5-7" data-lvl="17"></td>
+                    <td id="A-6-0" data-lvl="0"></td>
+                    <td id="A-6-1" data-lvl="16"></td>
+                    <td id="A-6-2" data-lvl="11"></td>
+                    <td id="A-6-3" data-lvl="3"></td>
+                    <td id="A-6-4" data-lvl="13"></td>
+                    <td id="A-6-5" data-lvl="8"></td>
+                    <td id="A-6-6" data-lvl="5"></td>
+                    <td id="A-6-7" data-lvl="13"></td>
+                </tr>
+                <tr data-c="B">
+                    <td id="B-">B</td>
+                    <td id="B-0-0" data-lvl="1"></td>
+                    <td id="B-0-1" data-lvl="12"></td>
+                    <td id="B-0-2" data-lvl="0"></td>
+                    <td id="B-0-3" data-lvl="9"></td>
+                    <td id="B-0-4" data-lvl="2"></td>
+                    <td id="B-0-5" data-lvl="15"></td>
+                    <td id="B-0-6" data-lvl="0"></td>
+                    <td id="B-0-7" data-lvl="9"></td>
+                    <td id="B-1-0" data-lvl="10"></td>
+                    <td id="B-1-1" data-lvl="3"></td>
+                    <td id="B-1-2" data-lvl="8"></td>
+                    <td id="B-1-3" data-lvl="13"></td>
+                    <td id="B-1-4" data-lvl="3"></td>
+                    <td id="B-1-5" data-lvl="16"></td>
+                    <td id="B-1-6" data-lvl="8"></td>
+                    <td id="B-1-7" data-lvl="1"></td>
+                    <td id="B-2-0" data-lvl="12"></td>
+                    <td id="B-2-1" data-lvl="0"></td>
+                    <td id="B-2-2" data-lvl="15"></td>
+                    <td id="B-2-3" data-lvl="2"></td>
+                    <td id="B-2-4" data-lvl="9"></td>
+                    <td id="B-2-5" data-lvl="1"></td>
+                    <td id="B-2-6" data-lvl="10"></td>
+                    <td id="B-2-7" data-lvl="16"></td>
+                    <td id="B-3-0" data-lvl="7"></td>
+                    <td id="B-3-1" data-lvl="14"></td>
+                    <td id="B-3-2" data-lvl="6"></td>
+                    <td id="B-3-3" data-lvl="11"></td>
+                    <td id="B-3-4" data-lvl="5"></td>
+                    <td id="B-3-5" data-lvl="17"></td>
+                    <td id="B-3-6" data-lvl="5"></td>
+                    <td id="B-3-7" data-lvl="11"></td>
+                    <td id="B-4-0" data-lvl="4"></td>
+                    <td id="B-4-1" data-lvl="8"></td>
+                    <td id="B-4-2" data-lvl="10"></td>
+                    <td id="B-4-3" data-lvl="4"></td>
+                    <td id="B-4-4" data-lvl="16"></td>
+                    <td id="B-4-5" data-lvl="13"></td>
+                    <td id="B-4-6" data-lvl="17"></td>
+                    <td id="B-4-7" data-lvl="2"></td>
+                    <td id="B-5-0" data-lvl="14"></td>
+                    <td id="B-5-1" data-lvl="6"></td>
+                    <td id="B-5-2" data-lvl="11"></td>
+                    <td id="B-5-3" data-lvl="5"></td>
+                    <td id="B-5-4" data-lvl="17"></td>
+                    <td id="B-5-5" data-lvl="7"></td>
+                    <td id="B-5-6" data-lvl="12"></td>
+                    <td id="B-5-7" data-lvl="12"></td>
+                    <td id="B-6-0" data-lvl="1"></td>
+                    <td id="B-6-1" data-lvl="17"></td>
+                    <td id="B-6-2" data-lvl="9"></td>
+                    <td id="B-6-3" data-lvl="5"></td>
+                    <td id="B-6-4" data-lvl="14"></td>
+                    <td id="B-6-5" data-lvl="6"></td>
+                    <td id="B-6-6" data-lvl="4"></td>
+                    <td id="B-6-7" data-lvl="14"></td>
+                </tr>
+                <tr data-c="C">
+                    <td id="C-">C</td>
+                    <td id="C-0-0" data-lvl="2"></td>
+                    <td id="C-0-1" data-lvl="15"></td>
+                    <td id="C-0-2" data-lvl="1"></td>
+                    <td id="C-0-3" data-lvl="12"></td>
+                    <td id="C-0-4" data-lvl="0"></td>
+                    <td id="C-0-5" data-lvl="9"></td>
+                    <td id="C-0-6" data-lvl="16"></td>
+                    <td id="C-0-7" data-lvl="0"></td>
+                    <td id="C-1-0" data-lvl="8"></td>
+                    <td id="C-1-1" data-lvl="10"></td>
+                    <td id="C-1-2" data-lvl="3"></td>
+                    <td id="C-1-3" data-lvl="16"></td>
+                    <td id="C-1-4" data-lvl="13"></td>
+                    <td id="C-1-5" data-lvl="3"></td>
+                    <td id="C-1-6" data-lvl="6"></td>
+                    <td id="C-1-7" data-lvl="4"></td>
+                    <td id="C-2-0" data-lvl="15"></td>
+                    <td id="C-2-1" data-lvl="1"></td>
+                    <td id="C-2-2" data-lvl="9"></td>
+                    <td id="C-2-3" data-lvl="0"></td>
+                    <td id="C-2-4" data-lvl="12"></td>
+                    <td id="C-2-5" data-lvl="2"></td>
+                    <td id="C-2-6" data-lvl="13"></td>
+                    <td id="C-2-7" data-lvl="11"></td>
+                    <td id="C-3-0" data-lvl="5"></td>
+                    <td id="C-3-1" data-lvl="17"></td>
+                    <td id="C-3-2" data-lvl="7"></td>
+                    <td id="C-3-3" data-lvl="14"></td>
+                    <td id="C-3-4" data-lvl="6"></td>
+                    <td id="C-3-5" data-lvl="11"></td>
+                    <td id="C-3-6" data-lvl="17"></td>
+                    <td id="C-3-7" data-lvl="3"></td>
+                    <td id="C-4-0" data-lvl="16"></td>
+                    <td id="C-4-1" data-lvl="4"></td>
+                    <td id="C-4-2" data-lvl="13"></td>
+                    <td id="C-4-3" data-lvl="8"></td>
+                    <td id="C-4-4" data-lvl="4"></td>
+                    <td id="C-4-5" data-lvl="10"></td>
+                    <td id="C-4-6" data-lvl="2"></td>
+                    <td id="C-4-7" data-lvl="14"></td>
+                    <td id="C-5-0" data-lvl="17"></td>
+                    <td id="C-5-1" data-lvl="7"></td>
+                    <td id="C-5-2" data-lvl="14"></td>
+                    <td id="C-5-3" data-lvl="6"></td>
+                    <td id="C-5-4" data-lvl="11"></td>
+                    <td id="C-5-5" data-lvl="5"></td>
+                    <td id="C-5-6" data-lvl="14"></td>
+                    <td id="C-5-7" data-lvl="15"></td>
+                    <td id="C-6-0" data-lvl="2"></td>
+                    <td id="C-6-1" data-lvl="15"></td>
+                    <td id="C-6-2" data-lvl="10"></td>
+                    <td id="C-6-3" data-lvl="4"></td>
+                    <td id="C-6-4" data-lvl="12"></td>
+                    <td id="C-6-5" data-lvl="7"></td>
+                    <td id="C-6-6" data-lvl="3"></td>
+                    <td id="C-6-7" data-lvl="12"></td>
+                </tr>
+                <tr data-c="D">
+                    <td id="D-">D</td>
+                    <td id="D-0-0" data-lvl="12"></td>
+                    <td id="D-0-1" data-lvl="0"></td>
+                    <td id="D-0-2" data-lvl="15"></td>
+                    <td id="D-0-3" data-lvl="2"></td>
+                    <td id="D-0-4" data-lvl="9"></td>
+                    <td id="D-0-5" data-lvl="1"></td>
+                    <td id="D-0-6" data-lvl="10"></td>
+                    <td id="D-0-7" data-lvl="16"></td>
+                    <td id="D-1-0" data-lvl="2"></td>
+                    <td id="D-1-1" data-lvl="15"></td>
+                    <td id="D-1-2" data-lvl="1"></td>
+                    <td id="D-1-3" data-lvl="12"></td>
+                    <td id="D-1-4" data-lvl="0"></td>
+                    <td id="D-1-5" data-lvl="9"></td>
+                    <td id="D-1-6" data-lvl="4"></td>
+                    <td id="D-1-7" data-lvl="9"></td>
+                    <td id="D-2-0" data-lvl="3"></td>
+                    <td id="D-2-1" data-lvl="13"></td>
+                    <td id="D-2-2" data-lvl="16"></td>
+                    <td id="D-2-3" data-lvl="3"></td>
+                    <td id="D-2-4" data-lvl="10"></td>
+                    <td id="D-2-5" data-lvl="8"></td>
+                    <td id="D-2-6" data-lvl="1"></td>
+                    <td id="D-2-7" data-lvl="8"></td>
+                    <td id="D-3-0" data-lvl="14"></td>
+                    <td id="D-3-1" data-lvl="6"></td>
+                    <td id="D-3-2" data-lvl="11"></td>
+                    <td id="D-3-3" data-lvl="5"></td>
+                    <td id="D-3-4" data-lvl="17"></td>
+                    <td id="D-3-5" data-lvl="7"></td>
+                    <td id="D-3-6" data-lvl="12"></td>
+                    <td id="D-3-7" data-lvl="13"></td>
+                    <td id="D-4-0" data-lvl="5"></td>
+                    <td id="D-4-1" data-lvl="17"></td>
+                    <td id="D-4-2" data-lvl="7"></td>
+                    <td id="D-4-3" data-lvl="14"></td>
+                    <td id="D-4-4" data-lvl="6"></td>
+                    <td id="D-4-5" data-lvl="11"></td>
+                    <td id="D-4-6" data-lvl="3"></td>
+                    <td id="D-4-7" data-lvl="10"></td>
+                    <td id="D-5-0" data-lvl="13"></td>
+                    <td id="D-5-1" data-lvl="16"></td>
+                    <td id="D-5-2" data-lvl="4"></td>
+                    <td id="D-5-3" data-lvl="10"></td>
+                    <td id="D-5-4" data-lvl="8"></td>
+                    <td id="D-5-5" data-lvl="4"></td>
+                    <td id="D-5-6" data-lvl="11"></td>
+                    <td id="D-5-7" data-lvl="5"></td>
+                    <td id="D-6-0" data-lvl="8"></td>
+                    <td id="D-6-1" data-lvl="0"></td>
+                    <td id="D-6-2" data-lvl="16"></td>
+                    <td id="D-6-3" data-lvl="11"></td>
+                    <td id="D-6-4" data-lvl="3"></td>
+                    <td id="D-6-5" data-lvl="13"></td>
+                    <td id="D-6-6" data-lvl="8"></td>
+                    <td id="D-6-7" data-lvl="0"></td>
+                </tr>
+                <tr data-c="E">
+                    <td id="E-">E</td>
+                    <td id="E-0-0" data-lvl="15"></td>
+                    <td id="E-0-1" data-lvl="1"></td>
+                    <td id="E-0-2" data-lvl="9"></td>
+                    <td id="E-0-3" data-lvl="0"></td>
+                    <td id="E-0-4" data-lvl="12"></td>
+                    <td id="E-0-5" data-lvl="2"></td>
+                    <td id="E-0-6" data-lvl="13"></td>
+                    <td id="E-0-7" data-lvl="12"></td>
+                    <td id="E-1-0" data-lvl="0"></td>
+                    <td id="E-1-1" data-lvl="9"></td>
+                    <td id="E-1-2" data-lvl="2"></td>
+                    <td id="E-1-3" data-lvl="15"></td>
+                    <td id="E-1-4" data-lvl="1"></td>
+                    <td id="E-1-5" data-lvl="12"></td>
+                    <td id="E-1-6" data-lvl="0"></td>
+                    <td id="E-1-7" data-lvl="6"></td>
+                    <td id="E-2-0" data-lvl="10"></td>
+                    <td id="E-2-1" data-lvl="3"></td>
+                    <td id="E-2-2" data-lvl="8"></td>
+                    <td id="E-2-3" data-lvl="13"></td>
+                    <td id="E-2-4" data-lvl="3"></td>
+                    <td id="E-2-5" data-lvl="16"></td>
+                    <td id="E-2-6" data-lvl="8"></td>
+                    <td id="E-2-7" data-lvl="1"></td>
+                    <td id="E-3-0" data-lvl="17"></td>
+                    <td id="E-3-1" data-lvl="7"></td>
+                    <td id="E-3-2" data-lvl="14"></td>
+                    <td id="E-3-3" data-lvl="6"></td>
+                    <td id="E-3-4" data-lvl="11"></td>
+                    <td id="E-3-5" data-lvl="5"></td>
+                    <td id="E-3-6" data-lvl="15"></td>
+                    <td id="E-3-7" data-lvl="15"></td>
+                    <td id="E-4-0" data-lvl="6"></td>
+                    <td id="E-4-1" data-lvl="11"></td>
+                    <td id="E-4-2" data-lvl="5"></td>
+                    <td id="E-4-3" data-lvl="17"></td>
+                    <td id="E-4-4" data-lvl="7"></td>
+                    <td id="E-4-5" data-lvl="14"></td>
+                    <td id="E-4-6" data-lvl="5"></td>
+                    <td id="E-4-7" data-lvl="7"></td>
+                    <td id="E-5-0" data-lvl="4"></td>
+                    <td id="E-5-1" data-lvl="8"></td>
+                    <td id="E-5-2" data-lvl="10"></td>
+                    <td id="E-5-3" data-lvl="4"></td>
+                    <td id="E-5-4" data-lvl="16"></td>
+                    <td id="E-5-5" data-lvl="13"></td>
+                    <td id="E-5-6" data-lvl="17"></td>
+                    <td id="E-5-7" data-lvl="2"></td>
+                    <td id="E-6-0" data-lvl="6"></td>
+                    <td id="E-6-1" data-lvl="1"></td>
+                    <td id="E-6-2" data-lvl="17"></td>
+                    <td id="E-6-3" data-lvl="9"></td>
+                    <td id="E-6-4" data-lvl="4"></td>
+                    <td id="E-6-5" data-lvl="14"></td>
+                    <td id="E-6-6" data-lvl="1"></td>
+                    <td id="E-6-7" data-lvl="16"></td>
+                </tr>
+                <tr data-c="G">
+                    <td id="G-">G</td>
+                    <td id="G-0-0" data-lvl="9"></td>
+                    <td id="G-0-1" data-lvl="2"></td>
+                    <td id="G-0-2" data-lvl="12"></td>
+                    <td id="G-0-3" data-lvl="1"></td>
+                    <td id="G-0-4" data-lvl="15"></td>
+                    <td id="G-0-5" data-lvl="0"></td>
+                    <td id="G-0-6" data-lvl="7"></td>
+                    <td id="G-0-7" data-lvl="14"></td>
+                    <td id="G-1-0" data-lvl="1"></td>
+                    <td id="G-1-1" data-lvl="12"></td>
+                    <td id="G-1-2" data-lvl="0"></td>
+                    <td id="G-1-3" data-lvl="9"></td>
+                    <td id="G-1-4" data-lvl="2"></td>
+                    <td id="G-1-5" data-lvl="15"></td>
+                    <td id="G-1-6" data-lvl="16"></td>
+                    <td id="G-1-7" data-lvl="0"></td>
+                    <td id="G-2-0" data-lvl="8"></td>
+                    <td id="G-2-1" data-lvl="10"></td>
+                    <td id="G-2-2" data-lvl="3"></td>
+                    <td id="G-2-3" data-lvl="16"></td>
+                    <td id="G-2-4" data-lvl="13"></td>
+                    <td id="G-2-5" data-lvl="3"></td>
+                    <td id="G-2-6" data-lvl="6"></td>
+                    <td id="G-2-7" data-lvl="4"></td>
+                    <td id="G-3-0" data-lvl="11"></td>
+                    <td id="G-3-1" data-lvl="5"></td>
+                    <td id="G-3-2" data-lvl="17"></td>
+                    <td id="G-3-3" data-lvl="7"></td>
+                    <td id="G-3-4" data-lvl="14"></td>
+                    <td id="G-3-5" data-lvl="6"></td>
+                    <td id="G-3-6" data-lvl="9"></td>
+                    <td id="G-3-7" data-lvl="17"></td>
+                    <td id="G-4-0" data-lvl="7"></td>
+                    <td id="G-4-1" data-lvl="14"></td>
+                    <td id="G-4-2" data-lvl="6"></td>
+                    <td id="G-4-3" data-lvl="11"></td>
+                    <td id="G-4-4" data-lvl="5"></td>
+                    <td id="G-4-5" data-lvl="17"></td>
+                    <td id="G-4-6" data-lvl="16"></td>
+                    <td id="G-4-7" data-lvl="3"></td>
+                    <td id="G-5-0" data-lvl="16"></td>
+                    <td id="G-5-1" data-lvl="4"></td>
+                    <td id="G-5-2" data-lvl="13"></td>
+                    <td id="G-5-3" data-lvl="8"></td>
+                    <td id="G-5-4" data-lvl="4"></td>
+                    <td id="G-5-5" data-lvl="10"></td>
+                    <td id="G-5-6" data-lvl="2"></td>
+                    <td id="G-5-7" data-lvl="14"></td>
+                    <td id="G-6-0" data-lvl="7"></td>
+                    <td id="G-6-1" data-lvl="2"></td>
+                    <td id="G-6-2" data-lvl="15"></td>
+                    <td id="G-6-3" data-lvl="10"></td>
+                    <td id="G-6-4" data-lvl="5"></td>
+                    <td id="G-6-5" data-lvl="12"></td>
+                    <td id="G-6-6" data-lvl="7"></td>
+                    <td id="G-6-7" data-lvl="1"></td>
+                </tr>
+                <tr data-c="H">
+                    <td id="H-">H</td>
+                    <td id="H-0-0" data-lvl="3"></td>
+                    <td id="H-0-1" data-lvl="13"></td>
+                    <td id="H-0-2" data-lvl="16"></td>
+                    <td id="H-0-3" data-lvl="3"></td>
+                    <td id="H-0-4" data-lvl="10"></td>
+                    <td id="H-0-5" data-lvl="8"></td>
+                    <td id="H-0-6" data-lvl="1"></td>
+                    <td id="H-0-7" data-lvl="10"></td>
+                    <td id="H-1-0" data-lvl="12"></td>
+                    <td id="H-1-1" data-lvl="0"></td>
+                    <td id="H-1-2" data-lvl="15"></td>
+                    <td id="H-1-3" data-lvl="2"></td>
+                    <td id="H-1-4" data-lvl="9"></td>
+                    <td id="H-1-5" data-lvl="1"></td>
+                    <td id="H-1-6" data-lvl="10"></td>
+                    <td id="H-1-7" data-lvl="16"></td>
+                    <td id="H-2-0" data-lvl="2"></td>
+                    <td id="H-2-1" data-lvl="15"></td>
+                    <td id="H-2-2" data-lvl="1"></td>
+                    <td id="H-2-3" data-lvl="12"></td>
+                    <td id="H-2-4" data-lvl="0"></td>
+                    <td id="H-2-5" data-lvl="9"></td>
+                    <td id="H-2-6" data-lvl="0"></td>
+                    <td id="H-2-7" data-lvl="9"></td>
+                    <td id="H-3-0" data-lvl="13"></td>
+                    <td id="H-3-1" data-lvl="16"></td>
+                    <td id="H-3-2" data-lvl="4"></td>
+                    <td id="H-3-3" data-lvl="10"></td>
+                    <td id="H-3-4" data-lvl="8"></td>
+                    <td id="H-3-5" data-lvl="4"></td>
+                    <td id="H-3-6" data-lvl="11"></td>
+                    <td id="H-3-7" data-lvl="5"></td>
+                    <td id="H-4-0" data-lvl="14"></td>
+                    <td id="H-4-1" data-lvl="6"></td>
+                    <td id="H-4-2" data-lvl="11"></td>
+                    <td id="H-4-3" data-lvl="5"></td>
+                    <td id="H-4-4" data-lvl="17"></td>
+                    <td id="H-4-5" data-lvl="7"></td>
+                    <td id="H-4-6" data-lvl="12"></td>
+                    <td id="H-4-7" data-lvl="12"></td>
+                    <td id="H-5-0" data-lvl="5"></td>
+                    <td id="H-5-1" data-lvl="17"></td>
+                    <td id="H-5-2" data-lvl="7"></td>
+                    <td id="H-5-3" data-lvl="14"></td>
+                    <td id="H-5-4" data-lvl="6"></td>
+                    <td id="H-5-5" data-lvl="11"></td>
+                    <td id="H-5-6" data-lvl="3"></td>
+                    <td id="H-5-7" data-lvl="10"></td>
+                    <td id="H-6-0" data-lvl="13"></td>
+                    <td id="H-6-1" data-lvl="8"></td>
+                    <td id="H-6-2" data-lvl="0"></td>
+                    <td id="H-6-3" data-lvl="16"></td>
+                    <td id="H-6-4" data-lvl="11"></td>
+                    <td id="H-6-5" data-lvl="3"></td>
+                    <td id="H-6-6" data-lvl="13"></td>
+                    <td id="H-6-7" data-lvl="15"></td>
+                </tr>
+                <tr data-c="J">
+                    <td id="J-">J</td>
+                    <td id="J-0-0" data-lvl="10"></td>
+                    <td id="J-0-1" data-lvl="3"></td>
+                    <td id="J-0-2" data-lvl="8"></td>
+                    <td id="J-0-3" data-lvl="13"></td>
+                    <td id="J-0-4" data-lvl="3"></td>
+                    <td id="J-0-5" data-lvl="16"></td>
+                    <td id="J-0-6" data-lvl="8"></td>
+                    <td id="J-0-7" data-lvl="1"></td>
+                    <td id="J-1-0" data-lvl="15"></td>
+                    <td id="J-1-1" data-lvl="1"></td>
+                    <td id="J-1-2" data-lvl="9"></td>
+                    <td id="J-1-3" data-lvl="0"></td>
+                    <td id="J-1-4" data-lvl="12"></td>
+                    <td id="J-1-5" data-lvl="2"></td>
+                    <td id="J-1-6" data-lvl="13"></td>
+                    <td id="J-1-7" data-lvl="11"></td>
+                    <td id="J-2-0" data-lvl="0"></td>
+                    <td id="J-2-1" data-lvl="9"></td>
+                    <td id="J-2-2" data-lvl="2"></td>
+                    <td id="J-2-3" data-lvl="15"></td>
+                    <td id="J-2-4" data-lvl="1"></td>
+                    <td id="J-2-5" data-lvl="12"></td>
+                    <td id="J-2-6" data-lvl="4"></td>
+                    <td id="J-2-7" data-lvl="6"></td>
+                    <td id="J-3-0" data-lvl="4"></td>
+                    <td id="J-3-1" data-lvl="8"></td>
+                    <td id="J-3-2" data-lvl="10"></td>
+                    <td id="J-3-3" data-lvl="4"></td>
+                    <td id="J-3-4" data-lvl="16"></td>
+                    <td id="J-3-5" data-lvl="13"></td>
+                    <td id="J-3-6" data-lvl="2"></td>
+                    <td id="J-3-7" data-lvl="6"></td>
+                    <td id="J-4-0" data-lvl="17"></td>
+                    <td id="J-4-1" data-lvl="7"></td>
+                    <td id="J-4-2" data-lvl="14"></td>
+                    <td id="J-4-3" data-lvl="6"></td>
+                    <td id="J-4-4" data-lvl="11"></td>
+                    <td id="J-4-5" data-lvl="5"></td>
+                    <td id="J-4-6" data-lvl="14"></td>
+                    <td id="J-4-7" data-lvl="15"></td>
+                    <td id="J-5-0" data-lvl="6"></td>
+                    <td id="J-5-1" data-lvl="11"></td>
+                    <td id="J-5-2" data-lvl="5"></td>
+                    <td id="J-5-3" data-lvl="17"></td>
+                    <td id="J-5-4" data-lvl="7"></td>
+                    <td id="J-5-5" data-lvl="14"></td>
+                    <td id="J-5-6" data-lvl="15"></td>
+                    <td id="J-5-7" data-lvl="3"></td>
+                    <td id="J-6-0" data-lvl="14"></td>
+                    <td id="J-6-1" data-lvl="6"></td>
+                    <td id="J-6-2" data-lvl="1"></td>
+                    <td id="J-6-3" data-lvl="17"></td>
+                    <td id="J-6-4" data-lvl="9"></td>
+                    <td id="J-6-5" data-lvl="4"></td>
+                    <td id="J-6-6" data-lvl="14"></td>
+                    <td id="J-6-7" data-lvl="3"></td>
+                </tr>
+                <tr data-c="K">
+                    <td id="K-">K</td>
+                    <td id="K-0-0" data-lvl="8"></td>
+                    <td id="K-0-1" data-lvl="10"></td>
+                    <td id="K-0-2" data-lvl="3"></td>
+                    <td id="K-0-3" data-lvl="16"></td>
+                    <td id="K-0-4" data-lvl="13"></td>
+                    <td id="K-0-5" data-lvl="3"></td>
+                    <td id="K-0-6" data-lvl="6"></td>
+                    <td id="K-0-7" data-lvl="4"></td>
+                    <td id="K-1-0" data-lvl="9"></td>
+                    <td id="K-1-1" data-lvl="2"></td>
+                    <td id="K-1-2" data-lvl="12"></td>
+                    <td id="K-1-3" data-lvl="1"></td>
+                    <td id="K-1-4" data-lvl="15"></td>
+                    <td id="K-1-5" data-lvl="0"></td>
+                    <td id="K-1-6" data-lvl="7"></td>
+                    <td id="K-1-7" data-lvl="13"></td>
+                    <td id="K-2-0" data-lvl="1"></td>
+                    <td id="K-2-1" data-lvl="12"></td>
+                    <td id="K-2-2" data-lvl="0"></td>
+                    <td id="K-2-3" data-lvl="9"></td>
+                    <td id="K-2-4" data-lvl="2"></td>
+                    <td id="K-2-5" data-lvl="15"></td>
+                    <td id="K-2-6" data-lvl="15"></td>
+                    <td id="K-2-7" data-lvl="0"></td>
+                    <td id="K-3-0" data-lvl="16"></td>
+                    <td id="K-3-1" data-lvl="4"></td>
+                    <td id="K-3-2" data-lvl="13"></td>
+                    <td id="K-3-3" data-lvl="8"></td>
+                    <td id="K-3-4" data-lvl="4"></td>
+                    <td id="K-3-5" data-lvl="10"></td>
+                    <td id="K-3-6" data-lvl="14"></td>
+                    <td id="K-3-7" data-lvl="2"></td>
+                    <td id="K-4-0" data-lvl="11"></td>
+                    <td id="K-4-1" data-lvl="5"></td>
+                    <td id="K-4-2" data-lvl="17"></td>
+                    <td id="K-4-3" data-lvl="7"></td>
+                    <td id="K-4-4" data-lvl="14"></td>
+                    <td id="K-4-5" data-lvl="6"></td>
+                    <td id="K-4-6" data-lvl="9"></td>
+                    <td id="K-4-7" data-lvl="17"></td>
+                    <td id="K-5-0" data-lvl="7"></td>
+                    <td id="K-5-1" data-lvl="14"></td>
+                    <td id="K-5-2" data-lvl="6"></td>
+                    <td id="K-5-3" data-lvl="11"></td>
+                    <td id="K-5-4" data-lvl="5"></td>
+                    <td id="K-5-5" data-lvl="17"></td>
+                    <td id="K-5-6" data-lvl="5"></td>
+                    <td id="K-5-7" data-lvl="8"></td>
+                    <td id="K-6-0" data-lvl="12"></td>
+                    <td id="K-6-1" data-lvl="7"></td>
+                    <td id="K-6-2" data-lvl="2"></td>
+                    <td id="K-6-3" data-lvl="15"></td>
+                    <td id="K-6-4" data-lvl="10"></td>
+                    <td id="K-6-5" data-lvl="5"></td>
+                    <td id="K-6-6" data-lvl="12"></td>
+                    <td id="K-6-7" data-lvl="4"></td>
+                </tr>
+                <tr data-c="L">
+                    <td id="L-">L</td>
+                    <td id="L-0-0" data-lvl="6"></td>
+                    <td id="L-0-1" data-lvl="11"></td>
+                    <td id="L-0-2" data-lvl="5"></td>
+                    <td id="L-0-3" data-lvl="17"></td>
+                    <td id="L-0-4" data-lvl="7"></td>
+                    <td id="L-0-5" data-lvl="14"></td>
+                    <td id="L-0-6" data-lvl="3"></td>
+                    <td id="L-0-7" data-lvl="8"></td>
+                    <td id="L-1-0" data-lvl="13"></td>
+                    <td id="L-1-1" data-lvl="16"></td>
+                    <td id="L-1-2" data-lvl="4"></td>
+                    <td id="L-1-3" data-lvl="10"></td>
+                    <td id="L-1-4" data-lvl="8"></td>
+                    <td id="L-1-5" data-lvl="4"></td>
+                    <td id="L-1-6" data-lvl="11"></td>
+                    <td id="L-1-7" data-lvl="5"></td>
+                    <td id="L-2-0" data-lvl="11"></td>
+                    <td id="L-2-1" data-lvl="5"></td>
+                    <td id="L-2-2" data-lvl="17"></td>
+                    <td id="L-2-3" data-lvl="7"></td>
+                    <td id="L-2-4" data-lvl="14"></td>
+                    <td id="L-2-5" data-lvl="6"></td>
+                    <td id="L-2-6" data-lvl="9"></td>
+                    <td id="L-2-7" data-lvl="17"></td>
+                    <td id="L-3-0" data-lvl="0"></td>
+                    <td id="L-3-1" data-lvl="9"></td>
+                    <td id="L-3-2" data-lvl="2"></td>
+                    <td id="L-3-3" data-lvl="15"></td>
+                    <td id="L-3-4" data-lvl="1"></td>
+                    <td id="L-3-5" data-lvl="12"></td>
+                    <td id="L-3-6" data-lvl="4"></td>
+                    <td id="L-3-7" data-lvl="7"></td>
+                    <td id="L-4-0" data-lvl="3"></td>
+                    <td id="L-4-1" data-lvl="13"></td>
+                    <td id="L-4-2" data-lvl="16"></td>
+                    <td id="L-4-3" data-lvl="3"></td>
+                    <td id="L-4-4" data-lvl="10"></td>
+                    <td id="L-4-5" data-lvl="8"></td>
+                    <td id="L-4-6" data-lvl="1"></td>
+                    <td id="L-4-7" data-lvl="8"></td>
+                    <td id="L-5-0" data-lvl="9"></td>
+                    <td id="L-5-1" data-lvl="2"></td>
+                    <td id="L-5-2" data-lvl="12"></td>
+                    <td id="L-5-3" data-lvl="1"></td>
+                    <td id="L-5-4" data-lvl="15"></td>
+                    <td id="L-5-5" data-lvl="0"></td>
+                    <td id="L-5-6" data-lvl="7"></td>
+                    <td id="L-5-7" data-lvl="13"></td>
+                    <td id="L-6-0" data-lvl="3"></td>
+                    <td id="L-6-1" data-lvl="13"></td>
+                    <td id="L-6-2" data-lvl="8"></td>
+                    <td id="L-6-3" data-lvl="0"></td>
+                    <td id="L-6-4" data-lvl="16"></td>
+                    <td id="L-6-5" data-lvl="11"></td>
+                    <td id="L-6-6" data-lvl="6"></td>
+                    <td id="L-6-7" data-lvl="10"></td>
+                </tr>
+                <tr data-c="M">
+                    <td id="M-">M</td>
+                    <td id="M-0-0" data-lvl="7"></td>
+                    <td id="M-0-1" data-lvl="14"></td>
+                    <td id="M-0-2" data-lvl="6"></td>
+                    <td id="M-0-3" data-lvl="11"></td>
+                    <td id="M-0-4" data-lvl="5"></td>
+                    <td id="M-0-5" data-lvl="17"></td>
+                    <td id="M-0-6" data-lvl="5"></td>
+                    <td id="M-0-7" data-lvl="11"></td>
+                    <td id="M-1-0" data-lvl="4"></td>
+                    <td id="M-1-1" data-lvl="8"></td>
+                    <td id="M-1-2" data-lvl="10"></td>
+                    <td id="M-1-3" data-lvl="4"></td>
+                    <td id="M-1-4" data-lvl="16"></td>
+                    <td id="M-1-5" data-lvl="13"></td>
+                    <td id="M-1-6" data-lvl="15"></td>
+                    <td id="M-1-7" data-lvl="2"></td>
+                    <td id="M-2-0" data-lvl="14"></td>
+                    <td id="M-2-1" data-lvl="6"></td>
+                    <td id="M-2-2" data-lvl="11"></td>
+                    <td id="M-2-3" data-lvl="5"></td>
+                    <td id="M-2-4" data-lvl="17"></td>
+                    <td id="M-2-5" data-lvl="7"></td>
+                    <td id="M-2-6" data-lvl="12"></td>
+                    <td id="M-2-7" data-lvl="12"></td>
+                    <td id="M-3-0" data-lvl="1"></td>
+                    <td id="M-3-1" data-lvl="12"></td>
+                    <td id="M-3-2" data-lvl="0"></td>
+                    <td id="M-3-3" data-lvl="9"></td>
+                    <td id="M-3-4" data-lvl="2"></td>
+                    <td id="M-3-5" data-lvl="15"></td>
+                    <td id="M-3-6" data-lvl="0"></td>
+                    <td id="M-3-7" data-lvl="9"></td>
+                    <td id="M-4-0" data-lvl="10"></td>
+                    <td id="M-4-1" data-lvl="3"></td>
+                    <td id="M-4-2" data-lvl="8"></td>
+                    <td id="M-4-3" data-lvl="13"></td>
+                    <td id="M-4-4" data-lvl="3"></td>
+                    <td id="M-4-5" data-lvl="16"></td>
+                    <td id="M-4-6" data-lvl="8"></td>
+                    <td id="M-4-7" data-lvl="1"></td>
+                    <td id="M-5-0" data-lvl="12"></td>
+                    <td id="M-5-1" data-lvl="0"></td>
+                    <td id="M-5-2" data-lvl="15"></td>
+                    <td id="M-5-3" data-lvl="2"></td>
+                    <td id="M-5-4" data-lvl="9"></td>
+                    <td id="M-5-5" data-lvl="1"></td>
+                    <td id="M-5-6" data-lvl="10"></td>
+                    <td id="M-5-7" data-lvl="16"></td>
+                    <td id="M-6-0" data-lvl="5"></td>
+                    <td id="M-6-1" data-lvl="14"></td>
+                    <td id="M-6-2" data-lvl="6"></td>
+                    <td id="M-6-3" data-lvl="1"></td>
+                    <td id="M-6-4" data-lvl="17"></td>
+                    <td id="M-6-5" data-lvl="9"></td>
+                    <td id="M-6-6" data-lvl="11"></td>
+                    <td id="M-6-7" data-lvl="11"></td>
+                </tr>
+                <tr data-c="N">
+                    <td id="N-">N</td>
+                    <td id="N-0-0" data-lvl="5"></td>
+                    <td id="N-0-1" data-lvl="17"></td>
+                    <td id="N-0-2" data-lvl="7"></td>
+                    <td id="N-0-3" data-lvl="14"></td>
+                    <td id="N-0-4" data-lvl="6"></td>
+                    <td id="N-0-5" data-lvl="11"></td>
+                    <td id="N-0-6" data-lvl="17"></td>
+                    <td id="N-0-7" data-lvl="3"></td>
+                    <td id="N-1-0" data-lvl="16"></td>
+                    <td id="N-1-1" data-lvl="4"></td>
+                    <td id="N-1-2" data-lvl="13"></td>
+                    <td id="N-1-3" data-lvl="8"></td>
+                    <td id="N-1-4" data-lvl="4"></td>
+                    <td id="N-1-5" data-lvl="10"></td>
+                    <td id="N-1-6" data-lvl="2"></td>
+                    <td id="N-1-7" data-lvl="14"></td>
+                    <td id="N-2-0" data-lvl="17"></td>
+                    <td id="N-2-1" data-lvl="7"></td>
+                    <td id="N-2-2" data-lvl="14"></td>
+                    <td id="N-2-3" data-lvl="6"></td>
+                    <td id="N-2-4" data-lvl="11"></td>
+                    <td id="N-2-5" data-lvl="5"></td>
+                    <td id="N-2-6" data-lvl="14"></td>
+                    <td id="N-2-7" data-lvl="15"></td>
+                    <td id="N-3-0" data-lvl="2"></td>
+                    <td id="N-3-1" data-lvl="15"></td>
+                    <td id="N-3-2" data-lvl="1"></td>
+                    <td id="N-3-3" data-lvl="12"></td>
+                    <td id="N-3-4" data-lvl="0"></td>
+                    <td id="N-3-5" data-lvl="9"></td>
+                    <td id="N-3-6" data-lvl="16"></td>
+                    <td id="N-3-7" data-lvl="0"></td>
+                    <td id="N-4-0" data-lvl="8"></td>
+                    <td id="N-4-1" data-lvl="10"></td>
+                    <td id="N-4-2" data-lvl="3"></td>
+                    <td id="N-4-3" data-lvl="16"></td>
+                    <td id="N-4-4" data-lvl="13"></td>
+                    <td id="N-4-5" data-lvl="3"></td>
+                    <td id="N-4-6" data-lvl="6"></td>
+                    <td id="N-4-7" data-lvl="4"></td>
+                    <td id="N-5-0" data-lvl="15"></td>
+                    <td id="N-5-1" data-lvl="1"></td>
+                    <td id="N-5-2" data-lvl="9"></td>
+                    <td id="N-5-3" data-lvl="0"></td>
+                    <td id="N-5-4" data-lvl="12"></td>
+                    <td id="N-5-5" data-lvl="2"></td>
+                    <td id="N-5-6" data-lvl="13"></td>
+                    <td id="N-5-7" data-lvl="11"></td>
+                    <td id="N-6-0" data-lvl="4"></td>
+                    <td id="N-6-1" data-lvl="12"></td>
+                    <td id="N-6-2" data-lvl="7"></td>
+                    <td id="N-6-3" data-lvl="2"></td>
+                    <td id="N-6-4" data-lvl="15"></td>
+                    <td id="N-6-5" data-lvl="10"></td>
+                    <td id="N-6-6" data-lvl="10"></td>
+                    <td id="N-6-7" data-lvl="9"></td>
+                </tr>
+                <tr data-c="P">
+                    <td id="P-">P</td>
+                    <td id="P-0-0" data-lvl="14"></td>
+                    <td id="P-0-1" data-lvl="6"></td>
+                    <td id="P-0-2" data-lvl="11"></td>
+                    <td id="P-0-3" data-lvl="5"></td>
+                    <td id="P-0-4" data-lvl="17"></td>
+                    <td id="P-0-5" data-lvl="7"></td>
+                    <td id="P-0-6" data-lvl="12"></td>
+                    <td id="P-0-7" data-lvl="13"></td>
+                    <td id="P-1-0" data-lvl="5"></td>
+                    <td id="P-1-1" data-lvl="17"></td>
+                    <td id="P-1-2" data-lvl="7"></td>
+                    <td id="P-1-3" data-lvl="14"></td>
+                    <td id="P-1-4" data-lvl="6"></td>
+                    <td id="P-1-5" data-lvl="11"></td>
+                    <td id="P-1-6" data-lvl="3"></td>
+                    <td id="P-1-7" data-lvl="10"></td>
+                    <td id="P-2-0" data-lvl="13"></td>
+                    <td id="P-2-1" data-lvl="16"></td>
+                    <td id="P-2-2" data-lvl="4"></td>
+                    <td id="P-2-3" data-lvl="10"></td>
+                    <td id="P-2-4" data-lvl="8"></td>
+                    <td id="P-2-5" data-lvl="4"></td>
+                    <td id="P-2-6" data-lvl="11"></td>
+                    <td id="P-2-7" data-lvl="5"></td>
+                    <td id="P-3-0" data-lvl="12"></td>
+                    <td id="P-3-1" data-lvl="0"></td>
+                    <td id="P-3-2" data-lvl="15"></td>
+                    <td id="P-3-3" data-lvl="2"></td>
+                    <td id="P-3-4" data-lvl="9"></td>
+                    <td id="P-3-5" data-lvl="1"></td>
+                    <td id="P-3-6" data-lvl="10"></td>
+                    <td id="P-3-7" data-lvl="16"></td>
+                    <td id="P-4-0" data-lvl="2"></td>
+                    <td id="P-4-1" data-lvl="15"></td>
+                    <td id="P-4-2" data-lvl="1"></td>
+                    <td id="P-4-3" data-lvl="12"></td>
+                    <td id="P-4-4" data-lvl="0"></td>
+                    <td id="P-4-5" data-lvl="9"></td>
+                    <td id="P-4-6" data-lvl="4"></td>
+                    <td id="P-4-7" data-lvl="9"></td>
+                    <td id="P-5-0" data-lvl="3"></td>
+                    <td id="P-5-1" data-lvl="13"></td>
+                    <td id="P-5-2" data-lvl="16"></td>
+                    <td id="P-5-3" data-lvl="3"></td>
+                    <td id="P-5-4" data-lvl="10"></td>
+                    <td id="P-5-5" data-lvl="8"></td>
+                    <td id="P-5-6" data-lvl="1"></td>
+                    <td id="P-5-7" data-lvl="7"></td>
+                    <td id="P-6-0" data-lvl="11"></td>
+                    <td id="P-6-1" data-lvl="3"></td>
+                    <td id="P-6-2" data-lvl="13"></td>
+                    <td id="P-6-3" data-lvl="8"></td>
+                    <td id="P-6-4" data-lvl="0"></td>
+                    <td id="P-6-5" data-lvl="16"></td>
+                    <td id="P-6-6" data-lvl="0"></td>
+                    <td id="P-6-7" data-lvl="17"></td>
+                </tr>
+                <tr data-c="Q">
+                    <td id="Q-">Q</td>
+                    <td id="Q-0-0" data-lvl="17"></td>
+                    <td id="Q-0-1" data-lvl="7"></td>
+                    <td id="Q-0-2" data-lvl="14"></td>
+                    <td id="Q-0-3" data-lvl="6"></td>
+                    <td id="Q-0-4" data-lvl="11"></td>
+                    <td id="Q-0-5" data-lvl="5"></td>
+                    <td id="Q-0-6" data-lvl="15"></td>
+                    <td id="Q-0-7" data-lvl="15"></td>
+                    <td id="Q-1-0" data-lvl="6"></td>
+                    <td id="Q-1-1" data-lvl="11"></td>
+                    <td id="Q-1-2" data-lvl="5"></td>
+                    <td id="Q-1-3" data-lvl="17"></td>
+                    <td id="Q-1-4" data-lvl="7"></td>
+                    <td id="Q-1-5" data-lvl="14"></td>
+                    <td id="Q-1-6" data-lvl="5"></td>
+                    <td id="Q-1-7" data-lvl="7"></td>
+                    <td id="Q-2-0" data-lvl="4"></td>
+                    <td id="Q-2-1" data-lvl="8"></td>
+                    <td id="Q-2-2" data-lvl="10"></td>
+                    <td id="Q-2-3" data-lvl="4"></td>
+                    <td id="Q-2-4" data-lvl="16"></td>
+                    <td id="Q-2-5" data-lvl="13"></td>
+                    <td id="Q-2-6" data-lvl="17"></td>
+                    <td id="Q-2-7" data-lvl="2"></td>
+                    <td id="Q-3-0" data-lvl="15"></td>
+                    <td id="Q-3-1" data-lvl="1"></td>
+                    <td id="Q-3-2" data-lvl="9"></td>
+                    <td id="Q-3-3" data-lvl="0"></td>
+                    <td id="Q-3-4" data-lvl="12"></td>
+                    <td id="Q-3-5" data-lvl="2"></td>
+                    <td id="Q-3-6" data-lvl="13"></td>
+                    <td id="Q-3-7" data-lvl="12"></td>
+                    <td id="Q-4-0" data-lvl="0"></td>
+                    <td id="Q-4-1" data-lvl="9"></td>
+                    <td id="Q-4-2" data-lvl="2"></td>
+                    <td id="Q-4-3" data-lvl="15"></td>
+                    <td id="Q-4-4" data-lvl="1"></td>
+                    <td id="Q-4-5" data-lvl="12"></td>
+                    <td id="Q-4-6" data-lvl="0"></td>
+                    <td id="Q-4-7" data-lvl="6"></td>
+                    <td id="Q-5-0" data-lvl="10"></td>
+                    <td id="Q-5-1" data-lvl="3"></td>
+                    <td id="Q-5-2" data-lvl="8"></td>
+                    <td id="Q-5-3" data-lvl="13"></td>
+                    <td id="Q-5-4" data-lvl="3"></td>
+                    <td id="Q-5-5" data-lvl="16"></td>
+                    <td id="Q-5-6" data-lvl="8"></td>
+                    <td id="Q-5-7" data-lvl="1"></td>
+                    <td id="Q-6-0" data-lvl="9"></td>
+                    <td id="Q-6-1" data-lvl="4"></td>
+                    <td id="Q-6-2" data-lvl="14"></td>
+                    <td id="Q-6-3" data-lvl="6"></td>
+                    <td id="Q-6-4" data-lvl="1"></td>
+                    <td id="Q-6-5" data-lvl="17"></td>
+                    <td id="Q-6-6" data-lvl="9"></td>
+                    <td id="Q-6-7" data-lvl="2"></td>
+                </tr>
+                <tr data-c="R">
+                    <td id="R-">R</td>
+                    <td id="R-0-0" data-lvl="11"></td>
+                    <td id="R-0-1" data-lvl="5"></td>
+                    <td id="R-0-2" data-lvl="17"></td>
+                    <td id="R-0-3" data-lvl="7"></td>
+                    <td id="R-0-4" data-lvl="14"></td>
+                    <td id="R-0-5" data-lvl="6"></td>
+                    <td id="R-0-6" data-lvl="9"></td>
+                    <td id="R-0-7" data-lvl="17"></td>
+                    <td id="R-1-0" data-lvl="7"></td>
+                    <td id="R-1-1" data-lvl="14"></td>
+                    <td id="R-1-2" data-lvl="6"></td>
+                    <td id="R-1-3" data-lvl="11"></td>
+                    <td id="R-1-4" data-lvl="5"></td>
+                    <td id="R-1-5" data-lvl="17"></td>
+                    <td id="R-1-6" data-lvl="17"></td>
+                    <td id="R-1-7" data-lvl="3"></td>
+                    <td id="R-2-0" data-lvl="16"></td>
+                    <td id="R-2-1" data-lvl="4"></td>
+                    <td id="R-2-2" data-lvl="13"></td>
+                    <td id="R-2-3" data-lvl="8"></td>
+                    <td id="R-2-4" data-lvl="4"></td>
+                    <td id="R-2-5" data-lvl="10"></td>
+                    <td id="R-2-6" data-lvl="2"></td>
+                    <td id="R-2-7" data-lvl="14"></td>
+                    <td id="R-3-0" data-lvl="9"></td>
+                    <td id="R-3-1" data-lvl="2"></td>
+                    <td id="R-3-2" data-lvl="12"></td>
+                    <td id="R-3-3" data-lvl="1"></td>
+                    <td id="R-3-4" data-lvl="15"></td>
+                    <td id="R-3-5" data-lvl="0"></td>
+                    <td id="R-3-6" data-lvl="7"></td>
+                    <td id="R-3-7" data-lvl="14"></td>
+                    <td id="R-4-0" data-lvl="1"></td>
+                    <td id="R-4-1" data-lvl="12"></td>
+                    <td id="R-4-2" data-lvl="0"></td>
+                    <td id="R-4-3" data-lvl="9"></td>
+                    <td id="R-4-4" data-lvl="2"></td>
+                    <td id="R-4-5" data-lvl="15"></td>
+                    <td id="R-4-6" data-lvl="15"></td>
+                    <td id="R-4-7" data-lvl="0"></td>
+                    <td id="R-5-0" data-lvl="8"></td>
+                    <td id="R-5-1" data-lvl="10"></td>
+                    <td id="R-5-2" data-lvl="3"></td>
+                    <td id="R-5-3" data-lvl="16"></td>
+                    <td id="R-5-4" data-lvl="13"></td>
+                    <td id="R-5-5" data-lvl="3"></td>
+                    <td id="R-5-6" data-lvl="6"></td>
+                    <td id="R-5-7" data-lvl="4"></td>
+                    <td id="R-6-0" data-lvl="10"></td>
+                    <td id="R-6-1" data-lvl="5"></td>
+                    <td id="R-6-2" data-lvl="12"></td>
+                    <td id="R-6-3" data-lvl="7"></td>
+                    <td id="R-6-4" data-lvl="2"></td>
+                    <td id="R-6-5" data-lvl="15"></td>
+                    <td id="R-6-6" data-lvl="2"></td>
+                    <td id="R-6-7" data-lvl="7"></td>
+                </tr>
+                <tr data-c="S">
+                    <td id="S-">S</td>
+                    <td id="S-0-0" data-lvl="13"></td>
+                    <td id="S-0-1" data-lvl="16"></td>
+                    <td id="S-0-2" data-lvl="4"></td>
+                    <td id="S-0-3" data-lvl="10"></td>
+                    <td id="S-0-4" data-lvl="8"></td>
+                    <td id="S-0-5" data-lvl="4"></td>
+                    <td id="S-0-6" data-lvl="11"></td>
+                    <td id="S-0-7" data-lvl="5"></td>
+                    <td id="S-1-0" data-lvl="14"></td>
+                    <td id="S-1-1" data-lvl="6"></td>
+                    <td id="S-1-2" data-lvl="11"></td>
+                    <td id="S-1-3" data-lvl="5"></td>
+                    <td id="S-1-4" data-lvl="17"></td>
+                    <td id="S-1-5" data-lvl="7"></td>
+                    <td id="S-1-6" data-lvl="12"></td>
+                    <td id="S-1-7" data-lvl="12"></td>
+                    <td id="S-2-0" data-lvl="5"></td>
+                    <td id="S-2-1" data-lvl="17"></td>
+                    <td id="S-2-2" data-lvl="7"></td>
+                    <td id="S-2-3" data-lvl="14"></td>
+                    <td id="S-2-4" data-lvl="6"></td>
+                    <td id="S-2-5" data-lvl="11"></td>
+                    <td id="S-2-6" data-lvl="5"></td>
+                    <td id="S-2-7" data-lvl="10"></td>
+                    <td id="S-3-0" data-lvl="3"></td>
+                    <td id="S-3-1" data-lvl="13"></td>
+                    <td id="S-3-2" data-lvl="16"></td>
+                    <td id="S-3-3" data-lvl="3"></td>
+                    <td id="S-3-4" data-lvl="10"></td>
+                    <td id="S-3-5" data-lvl="8"></td>
+                    <td id="S-3-6" data-lvl="1"></td>
+                    <td id="S-3-7" data-lvl="10"></td>
+                    <td id="S-4-0" data-lvl="12"></td>
+                    <td id="S-4-1" data-lvl="0"></td>
+                    <td id="S-4-2" data-lvl="15"></td>
+                    <td id="S-4-3" data-lvl="2"></td>
+                    <td id="S-4-4" data-lvl="9"></td>
+                    <td id="S-4-5" data-lvl="1"></td>
+                    <td id="S-4-6" data-lvl="10"></td>
+                    <td id="S-4-7" data-lvl="16"></td>
+                    <td id="S-5-0" data-lvl="2"></td>
+                    <td id="S-5-1" data-lvl="15"></td>
+                    <td id="S-5-2" data-lvl="1"></td>
+                    <td id="S-5-3" data-lvl="12"></td>
+                    <td id="S-5-4" data-lvl="0"></td>
+                    <td id="S-5-5" data-lvl="9"></td>
+                    <td id="S-5-6" data-lvl="0"></td>
+                    <td id="S-5-7" data-lvl="9"></td>
+                    <td id="S-6-0" data-lvl="16"></td>
+                    <td id="S-6-1" data-lvl="11"></td>
+                    <td id="S-6-2" data-lvl="3"></td>
+                    <td id="S-6-3" data-lvl="13"></td>
+                    <td id="S-6-4" data-lvl="8"></td>
+                    <td id="S-6-5" data-lvl="0"></td>
+                    <td id="S-6-6" data-lvl="16"></td>
+                    <td id="S-6-7" data-lvl="5"></td>
+                </tr>
+                <tr data-c="T">
+                    <td id="T-">T</td>
+                    <td id="T-0-0" data-lvl="4"></td>
+                    <td id="T-0-1" data-lvl="8"></td>
+                    <td id="T-0-2" data-lvl="10"></td>
+                    <td id="T-0-3" data-lvl="4"></td>
+                    <td id="T-0-4" data-lvl="16"></td>
+                    <td id="T-0-5" data-lvl="13"></td>
+                    <td id="T-0-6" data-lvl="2"></td>
+                    <td id="T-0-7" data-lvl="6"></td>
+                    <td id="T-1-0" data-lvl="17"></td>
+                    <td id="T-1-1" data-lvl="7"></td>
+                    <td id="T-1-2" data-lvl="14"></td>
+                    <td id="T-1-3" data-lvl="6"></td>
+                    <td id="T-1-4" data-lvl="11"></td>
+                    <td id="T-1-5" data-lvl="5"></td>
+                    <td id="T-1-6" data-lvl="14"></td>
+                    <td id="T-1-7" data-lvl="15"></td>
+                    <td id="T-2-0" data-lvl="6"></td>
+                    <td id="T-2-1" data-lvl="11"></td>
+                    <td id="T-2-2" data-lvl="5"></td>
+                    <td id="T-2-3" data-lvl="17"></td>
+                    <td id="T-2-4" data-lvl="7"></td>
+                    <td id="T-2-5" data-lvl="14"></td>
+                    <td id="T-2-6" data-lvl="3"></td>
+                    <td id="T-2-7" data-lvl="7"></td>
+                    <td id="T-3-0" data-lvl="10"></td>
+                    <td id="T-3-1" data-lvl="3"></td>
+                    <td id="T-3-2" data-lvl="8"></td>
+                    <td id="T-3-3" data-lvl="13"></td>
+                    <td id="T-3-4" data-lvl="3"></td>
+                    <td id="T-3-5" data-lvl="16"></td>
+                    <td id="T-3-6" data-lvl="8"></td>
+                    <td id="T-3-7" data-lvl="1"></td>
+                    <td id="T-4-0" data-lvl="15"></td>
+                    <td id="T-4-1" data-lvl="1"></td>
+                    <td id="T-4-2" data-lvl="9"></td>
+                    <td id="T-4-3" data-lvl="0"></td>
+                    <td id="T-4-4" data-lvl="12"></td>
+                    <td id="T-4-5" data-lvl="2"></td>
+                    <td id="T-4-6" data-lvl="13"></td>
+                    <td id="T-4-7" data-lvl="11"></td>
+                    <td id="T-5-0" data-lvl="0"></td>
+                    <td id="T-5-1" data-lvl="9"></td>
+                    <td id="T-5-2" data-lvl="2"></td>
+                    <td id="T-5-3" data-lvl="15"></td>
+                    <td id="T-5-4" data-lvl="1"></td>
+                    <td id="T-5-5" data-lvl="12"></td>
+                    <td id="T-5-6" data-lvl="4"></td>
+                    <td id="T-5-7" data-lvl="6"></td>
+                    <td id="T-6-0" data-lvl="17"></td>
+                    <td id="T-6-1" data-lvl="9"></td>
+                    <td id="T-6-2" data-lvl="4"></td>
+                    <td id="T-6-3" data-lvl="14"></td>
+                    <td id="T-6-4" data-lvl="6"></td>
+                    <td id="T-6-5" data-lvl="1"></td>
+                    <td id="T-6-6" data-lvl="17"></td>
+                    <td id="T-6-7" data-lvl="8"></td>
+                </tr>
+                <tr data-c="U">
+                    <td id="U-">U</td>
+                    <td id="U-0-0" data-lvl="16"></td>
+                    <td id="U-0-1" data-lvl="4"></td>
+                    <td id="U-0-2" data-lvl="13"></td>
+                    <td id="U-0-3" data-lvl="8"></td>
+                    <td id="U-0-4" data-lvl="4"></td>
+                    <td id="U-0-5" data-lvl="10"></td>
+                    <td id="U-0-6" data-lvl="14"></td>
+                    <td id="U-0-7" data-lvl="2"></td>
+                    <td id="U-1-0" data-lvl="11"></td>
+                    <td id="U-1-1" data-lvl="5"></td>
+                    <td id="U-1-2" data-lvl="17"></td>
+                    <td id="U-1-3" data-lvl="7"></td>
+                    <td id="U-1-4" data-lvl="14"></td>
+                    <td id="U-1-5" data-lvl="6"></td>
+                    <td id="U-1-6" data-lvl="9"></td>
+                    <td id="U-1-7" data-lvl="17"></td>
+                    <td id="U-2-0" data-lvl="7"></td>
+                    <td id="U-2-1" data-lvl="14"></td>
+                    <td id="U-2-2" data-lvl="6"></td>
+                    <td id="U-2-3" data-lvl="11"></td>
+                    <td id="U-2-4" data-lvl="5"></td>
+                    <td id="U-2-5" data-lvl="17"></td>
+                    <td id="U-2-6" data-lvl="16"></td>
+                    <td id="U-2-7" data-lvl="3"></td>
+                    <td id="U-3-0" data-lvl="8"></td>
+                    <td id="U-3-1" data-lvl="10"></td>
+                    <td id="U-3-2" data-lvl="3"></td>
+                    <td id="U-3-3" data-lvl="16"></td>
+                    <td id="U-3-4" data-lvl="13"></td>
+                    <td id="U-3-5" data-lvl="3"></td>
+                    <td id="U-3-6" data-lvl="6"></td>
+                    <td id="U-3-7" data-lvl="4"></td>
+                    <td id="U-4-0" data-lvl="9"></td>
+                    <td id="U-4-1" data-lvl="2"></td>
+                    <td id="U-4-2" data-lvl="12"></td>
+                    <td id="U-4-3" data-lvl="1"></td>
+                    <td id="U-4-4" data-lvl="15"></td>
+                    <td id="U-4-5" data-lvl="0"></td>
+                    <td id="U-4-6" data-lvl="7"></td>
+                    <td id="U-4-7" data-lvl="13"></td>
+                    <td id="U-5-0" data-lvl="1"></td>
+                    <td id="U-5-1" data-lvl="12"></td>
+                    <td id="U-5-2" data-lvl="0"></td>
+                    <td id="U-5-3" data-lvl="9"></td>
+                    <td id="U-5-4" data-lvl="2"></td>
+                    <td id="U-5-5" data-lvl="15"></td>
+                    <td id="U-5-6" data-lvl="16"></td>
+                    <td id="U-5-7" data-lvl="0"></td>
+                    <td id="U-6-0" data-lvl="15"></td>
+                    <td id="U-6-1" data-lvl="10"></td>
+                    <td id="U-6-2" data-lvl="5"></td>
+                    <td id="U-6-3" data-lvl="12"></td>
+                    <td id="U-6-4" data-lvl="7"></td>
+                    <td id="U-6-5" data-lvl="2"></td>
+                    <td id="U-6-6" data-lvl="15"></td>
+                    <td id="U-6-7" data-lvl="6"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="me">No Cookies | <a href="mailto:antony.hixson@outlook.com">antony.hixson@outlook.com</a></div>
+    <script>
+        
+        document.querySelectorAll('th[id^="-"]').forEach(th => {
+            const [start, end] = th.title.split("-");
+            th.dataset.s = start;
+            th.dataset.e = end;
+            document.querySelectorAll(`td[id$="${th.id}"]`).forEach(td => td.title = th.title);
+        });
+
+        const lvlIn = document.querySelector('[name="lvl"]');
+        const codeIn = document.querySelector('[name="code"]');
+        
+        const onLevelOfDisconnectChanged = (e) =>
+        {
+            const lvl = e.target.value;
+            blackout(lvl);
+            highlightPeriod();
+        }
+
+        const onOperatorCodeChanged = (e) =>
+        {
+            const code = e.target.value;
+            blackoutFocus(code);
+            highlightPeriod();
+        }
+
+        lvlIn.addEventListener('change', onLevelOfDisconnectChanged, false);
+        lvlIn.addEventListener('input', onLevelOfDisconnectChanged, false);
+
+        codeIn.addEventListener('change', onOperatorCodeChanged, false);
+        codeIn.addEventListener('input', onOperatorCodeChanged, false);
+
+        // timetable
+
+        const timetable = document.querySelector('table.timetable'),
+              timetableHead = timetable.querySelector('thead'),
+              timetableBody = timetable.querySelector('tbody');
+        
+        function blackout(levelOfDisconnect)
+        {
+            // reset
+            timetableBody.querySelectorAll('td[data-b]').forEach(el => el.dataset.b = false);
+
+            // set
+            for (let i = 0; i < levelOfDisconnect; i++)
+            {
+                timetableBody.querySelectorAll(`td[data-lvl="${i}"]`).forEach(el => el.dataset.b = true);
+            }
+        }
+        
+        function blackoutFocus(code)
+        {
+            if (!!code)
+            {
+                timetableBody.querySelectorAll(`td[id^=${code}]`).forEach(el => el.dataset.f = true);
+                timetableBody.querySelectorAll(`td:not([id^=${code}])`).forEach(el => el.dataset.f = false);
+            }
+            else
+            {
+                // reset
+                timetableBody.querySelectorAll('td[data-f]').forEach(el => el.dataset.f = '');
+            }
+        }
+
+        function highlightPeriod()
+        {
+            const lvl = lvlIn.value;
+            const code = codeIn.value;
+            
+            // reset
+            timetableHead.querySelectorAll('tr.day th, tr.time th, tr.period th').forEach(th => th.dataset.b = false);
+
+            if (code)
+            {
+                // set header row: time + period
+                timetableBody.querySelectorAll(`[id^=${code}][data-b=true]`).forEach(td =>
+                {
+                    const id = td.id;
+                    const periodId = id.substring(code.length);
+                    // set header row: time
+                    timetableHead.querySelector(`tr.time th[data-period="${periodId}"]`).dataset.b = true;
+                    // set header row: period
+                    timetableHead.querySelector(`tr.period th[id="${periodId}"]`).dataset.b = true;
+                });
+
+                // set header row: day
+                timetableHead.querySelectorAll('tr.day th[id]').forEach(th =>
+                {
+                    if (!timetableHead.querySelector(`tr.period th[id^="${th.id}"]:not([data-b="true"])`))
+                    {
+                        th.dataset.b = true;
+                    }
+                });
+            }
+        }
+
+        // reset input fields because firefox likes to remember these between page refreshes so no events trigger the blackout/focus funcs
+        lvlIn.value = 0;
+        codeIn.value = '';
+    </script>
+</body>
+</html>
